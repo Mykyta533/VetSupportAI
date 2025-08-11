@@ -1,0 +1,357 @@
+{
+  "recommendations": {
+    "breathing_exercises": [
+      {
+        "id": "breathing_478",
+        "title": {
+          "uk": "Дихальна техніка 4-7-8",
+          "en": "4-7-8 Breathing Technique"
+        },
+        "description": {
+          "uk": "Ефективна техніка для швидкого заспокоєння та зменшення стресу",
+          "en": "Effective technique for quick relaxation and stress reduction"
+        },
+        "instructions": {
+          "uk": [
+            "Сядьте зручно та закрийте очі",
+            "Вдих через ніс на 4 рахунки",
+            "Затримайте дихання на 7 рахунків",
+            "Видих через рот на 8 рахунків",
+            "Повторіть 4 цикли"
+          ],
+          "en": [
+            "Sit comfortably and close your eyes",
+            "Inhale through nose for 4 counts",
+            "Hold breath for 7 counts",
+            "Exhale through mouth for 8 counts",
+            "Repeat 4 cycles"
+          ]
+        },
+        "duration_minutes": 3,
+        "difficulty": 1,
+        "target_mood": [1, 2, 3, 4, 5, 6]
+      },
+      {
+        "id": "box_breathing",
+        "title": {
+          "uk": "Квадратне дихання",
+          "en": "Box Breathing"
+        },
+        "description": {
+          "uk": "Рівномірна дихальна техніка для концентрації та спокою",
+          "en": "Balanced breathing technique for focus and calm"
+        },
+        "instructions": {
+          "uk": [
+            "Вдих на 4 рахунки",
+            "Затримка на 4 рахунки",
+            "Видих на 4 рахунки",
+            "Пауза на 4 рахунки",
+            "Повторіть 5-10 разів"
+          ],
+          "en": [
+            "Inhale for 4 counts",
+            "Hold for 4 counts",
+            "Exhale for 4 counts",
+            "Pause for 4 counts",
+            "Repeat 5-10 times"
+          ]
+        },
+        "duration_minutes": 5,
+        "difficulty": 1,
+        "target_mood": [3, 4, 5, 6, 7]
+      }
+    ],
+    
+    "physical_exercises": [
+      {
+        "id": "gentle_stretching",
+        "title": {
+          "uk": "М'які розтяжки",
+          "en": "Gentle Stretching"
+        },
+        "description": {
+          "uk": "Легкі вправи для розслаблення м'язів та покращення настрою",
+          "en": "Light exercises for muscle relaxation and mood improvement"
+        },
+        "instructions": {
+          "uk": [
+            "Повільно поверніть голову ліворуч-праворуч",
+            "Підніміть плечі до вух, потім опустіть",
+            "Потягніть руки вгору над головою",
+            "Нахиліться вперед, розслабивши спину",
+            "Кожну вправу робіть повільно та обережно"
+          ],
+          "en": [
+            "Slowly turn your head left-right",
+            "Lift shoulders to ears, then lower",
+            "Stretch arms up above your head",
+            "Lean forward, relaxing your back",
+            "Do each exercise slowly and carefully"
+          ]
+        },
+        "duration_minutes": 10,
+        "difficulty": 1,
+        "target_mood": [1, 2, 3, 4, 5]
+      },
+      {
+        "id": "walking_meditation",
+        "title": {
+          "uk": "Медитативна ходьба",
+          "en": "Walking Meditation"
+        },
+        "description": {
+          "uk": "Поєднання легкої фізичної активності з усвідомленістю",
+          "en": "Combination of light physical activity with mindfulness"
+        },
+        "instructions": {
+          "uk": [
+            "Оберіть тихе місце для ходьби",
+            "Йдіть повільно, зосереджуючись на кроках",
+            "Відчувайте, як ваші ноги торкаються землі",
+            "Дихайте природно та глибоко",
+            "При відволіканні, повертайте увагу до ходьби"
+          ],
+          "en": [
+            "Choose a quiet place to walk",
+            "Walk slowly, focusing on your steps",
+            "Feel how your feet touch the ground",
+            "Breathe naturally and deeply",
+            "When distracted, return attention to walking"
+          ]
+        },
+        "duration_minutes": 15,
+        "difficulty": 2,
+        "target_mood": [2, 3, 4, 5, 6, 7]
+      }
+    ],
+    
+    "meditation": [
+      {
+        "id": "body_scan",
+        "title": {
+          "uk": "Сканування тіла",
+          "en": "Body Scan Meditation"
+        },
+        "description": {
+          "uk": "Техніка усвідомленості для глибокого розслаблення",
+          "en": "Mindfulness technique for deep relaxation"
+        },
+        "instructions": {
+          "uk": [
+            "Лягте зручно та закрийте очі",
+            "Почніть з кінчиків пальців ніг",
+            "Повільно переміщуйте увагу вгору по тілу",
+            "Відзначайте відчуття в кожній частині тіла",
+            "Не судіть - просто спостерігайте"
+          ],
+          "en": [
+            "Lie down comfortably and close your eyes",
+            "Start with your toes",
+            "Slowly move attention up through your body",
+            "Notice sensations in each body part",
+            "Don't judge - just observe"
+          ]
+        },
+        "duration_minutes": 20,
+        "difficulty": 2,
+        "target_mood": [1, 2, 3, 4, 5, 6]
+      }
+    ],
+    
+    "quick_tips": [
+      {
+        "id": "gratitude_practice",
+        "title": {
+          "uk": "Практика вдячності",
+          "en": "Gratitude Practice"
+        },
+        "description": {
+          "uk": "Швидкий спосіб покращити настрій через вдячність",
+          "en": "Quick way to improve mood through gratitude"
+        },
+        "instructions": {
+          "uk": [
+            "Назвіть 3 речі, за які ви вдячні сьогодні",
+            "Це можуть бути дрібниці: смачна кава, дзвінок друга",
+            "Відчуйте вдячність у серці",
+            "Запишіть їх або просто подумайте про них"
+          ],
+          "en": [
+            "Name 3 things you're grateful for today",
+            "These can be small things: good coffee, friend's call",
+            "Feel gratitude in your heart",
+            "Write them down or just think about them"
+          ]
+        },
+        "duration_minutes": 2,
+        "difficulty": 1,
+        "target_mood": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      }
+    ]
+  },
+  
+  "legal_documents": {
+    "veterans_benefits": [
+      {
+        "id": "disability_benefits",
+        "title": {
+          "uk": "Пільги по інвалідності для ветеранів",
+          "en": "Disability Benefits for Veterans"
+        },
+        "content": {
+          "uk": "Ветерани війни, які отримали інвалідність під час або внаслідок участі у бойових діях, мають право на:\n\n• Щомісячну грошову допомогу\n• Безоплатне медичне обслуговування\n• Пільги на комунальні послуги\n• Первочергове право на працевлаштування\n• Безоплатне протезування\n\nДля оформлення звертайтесь до територіального центру соціального захисту населення.",
+          "en": "War veterans who received disability during or as a result of participation in combat operations are entitled to:\n\n• Monthly financial assistance\n• Free medical care\n• Utility benefits\n• Priority employment rights\n• Free prosthetics\n\nTo apply, contact your local social protection center."
+        },
+        "category": "benefits",
+        "tags": ["disability", "benefits", "veterans", "medical"],
+        "source_url": "https://www.mva.gov.ua/",
+        "last_updated": "2024-01-15"
+      },
+      {
+        "id": "housing_benefits",
+        "title": {
+          "uk": "Житлові пільги для ветеранів",
+          "en": "Housing Benefits for Veterans"
+        },
+        "content": {
+          "uk": "Ветерани бойових дій мають право на:\n\n• Першочергове отримання житла з державного житлового фонду\n• Пільговий кредит на будівництво або придбання житла\n• 75% знижка на комунальні послуги\n• Безоплатна приватизація державного житла\n\nНеобхідні документи:\n- Посвідчення учасника бойових дій\n- Довідка про склад сім'ї\n- Документи про доходи",
+          "en": "Combat veterans are entitled to:\n\n• Priority housing from state housing fund\n• Preferential credit for construction or purchase of housing\n• 75% discount on utilities\n• Free privatization of state housing\n\nRequired documents:\n- Combat participant certificate\n- Family composition certificate\n- Income documents"
+        },
+        "category": "benefits",
+        "tags": ["housing", "veterans", "utilities", "privatization"],
+        "source_url": "https://www.mva.gov.ua/",
+        "last_updated": "2024-01-15"
+      }
+    ],
+    
+    "compensation": [
+      {
+        "id": "disability_compensation",
+        "title": {
+          "uk": "Компенсація за інвалідність",
+          "en": "Disability Compensation"
+        },
+        "content": {
+          "uk": "Розміри щомісячних виплат залежно від групи інвалідності:\n\n• I група інвалідності: 100% прожиткового мінімуму для непрацездатних осіб\n• II група інвалідності: 90% прожиткового мінімуму\n• III група інвалідності: 50% прожиткового мінімуму\n\nДодаткові виплати:\n• Компенсація витрат на догляд\n• Виплата за втрату годувальника\n• Одноразова допомога при встановленні інвалідності\n\nВиплати здійснюються щомісячно до 20 числа.",
+          "en": "Monthly payment amounts depending on disability group:\n\n• Group I disability: 100% of subsistence minimum for incapacitated persons\n• Group II disability: 90% of subsistence minimum\n• Group III disability: 50% of subsistence minimum\n\nAdditional payments:\n• Care cost compensation\n• Breadwinner loss payment\n• One-time assistance upon disability determination\n\nPayments are made monthly by the 20th."
+        },
+        "category": "compensation",
+        "tags": ["disability", "payments", "compensation", "monthly"],
+        "source_url": "https://www.mva.gov.ua/",
+        "last_updated": "2024-01-15"
+      }
+    ],
+    
+    "procedures": [
+      {
+        "id": "disability_determination",
+        "title": {
+          "uk": "Процедура встановлення інвалідності",
+          "en": "Disability Determination Procedure"
+        },
+        "content": {
+          "uk": "Алгоритм дій для встановлення інвалідності:\n\n1. Звернення до сімейного лікаря\n2. Проходження медико-соціальної експертизи (МСЕ)\n3. Подача документів до МСЕ:\n   - Заява\n   - Медичні документи\n   - Посвідчення учасника бойових дій\n   - Паспорт\n\n4. Очікування рішення (до 30 днів)\n5. Отримання довідки про інвалідність\n6. Звернення до соціального захисту для оформлення пільг\n\nПри незгоді з рішенням можна подати апеляцію протягом місяця.",
+          "en": "Algorithm for disability determination:\n\n1. Contact family doctor\n2. Undergo medical-social examination (MSE)\n3. Submit documents to MSE:\n   - Application\n   - Medical documents\n   - Combat participant certificate\n   - Passport\n\n4. Wait for decision (up to 30 days)\n5. Receive disability certificate\n6. Contact social protection to arrange benefits\n\nIf disagreeing with decision, can file appeal within a month."
+        },
+        "category": "procedures",
+        "tags": ["disability", "examination", "procedure", "appeal"],
+        "source_url": "https://www.mva.gov.ua/",
+        "last_updated": "2024-01-15"
+      }
+    ]
+  },
+  
+  "hotlines": {
+    "crisis_support": [
+      {
+        "name": {
+          "uk": "Національна гаряча лінія з попередження самогубств",
+          "en": "National Suicide Prevention Hotline"
+        },
+        "phone": "7333",
+        "description": {
+          "uk": "Цілодобова безкоштовна підтримка в кризових ситуаціях",
+          "en": "24/7 free crisis support"
+        },
+        "availability": "24/7",
+        "languages": ["uk", "en"]
+      },
+      {
+        "name": {
+          "uk": "Лінія психологічної підтримки",
+          "en": "Psychological Support Line"
+        },
+        "phone": "116 123",
+        "description": {
+          "uk": "Емоційна підтримка та консультації психологів",
+          "en": "Emotional support and psychological counseling"
+        },
+        "availability": "24/7",
+        "languages": ["uk"]
+      }
+    ],
+    
+    "veterans_support": [
+      {
+        "name": {
+          "uk": "Гаряча лінія Міністерства у справах ветеранів",
+          "en": "Ministry of Veterans Affairs Hotline"
+        },
+        "phone": "0 800 500 335",
+        "description": {
+          "uk": "Консультації з питань соціального захисту ветеранів",
+          "en": "Consultations on veterans' social protection issues"
+        },
+        "availability": "Пн-Пт 9:00-18:00",
+        "languages": ["uk"]
+      },
+      {
+        "name": {
+          "uk": "Центр психологічної реабілітації",
+          "en": "Psychological Rehabilitation Center"
+        },
+        "phone": "0 800 351 001",
+        "description": {
+          "uk": "Психологічна допомога ветеранам та їх сім'ям",
+          "en": "Psychological assistance for veterans and their families"
+        },
+        "availability": "Пн-Пт 9:00-21:00",
+        "languages": ["uk"]
+      }
+    ],
+    
+    "medical_emergency": [
+      {
+        "name": {
+          "uk": "Швидка медична допомога",
+          "en": "Emergency Medical Services"
+        },
+        "phone": "103",
+        "description": {
+          "uk": "Екстрена медична допомога",
+          "en": "Emergency medical care"
+        },
+        "availability": "24/7",
+        "languages": ["uk"]
+      }
+    ]
+  },
+  
+  "telemedicine_providers": [
+    {
+      "name": "Helsi",
+      "specializations": ["psychology", "psychiatry", "general"],
+      "languages": ["uk", "en"],
+      "features": ["video_calls", "text_chat", "prescriptions"],
+      "url": "https://helsi.me/"
+    },
+    {
+      "name": "Doctor Online",
+      "specializations": ["psychology", "psychiatry", "trauma", "ptsd"],
+      "languages": ["uk"],
+      "features": ["video_calls", "phone_calls", "emergency"],
+      "url": "https://doctor-online.ua/"
+    }
+  ]
+}

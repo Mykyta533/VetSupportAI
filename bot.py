@@ -67,8 +67,9 @@ async def on_startup():
         start_scheduler()
         
         # Set webhook if URL is provided
-        if config.WEBHOOK_URL:
-            webhook_url = f"{config.WEBHOOK_URL}{config.WEBHOOK_PATH}"
+        webhook_base_url = config.get_webhook_url()
+        if webhook_base_url:
+            webhook_url = f"{webhook_base_url}{config.WEBHOOK_PATH}"
             await bot.set_webhook(
                 url=webhook_url,
                 secret_token=config.WEBHOOK_SECRET
@@ -84,7 +85,7 @@ async def on_startup():
 async def on_shutdown():
     """Cleanup on shutdown"""
     try:
-        if config.WEBHOOK_URL:
+        if config.get_webhook_url():
             await bot.delete_webhook()
         
         await bot.session.close()
@@ -123,12 +124,24 @@ async def main():
     """Main application entry point"""
     setup_handlers()
     
-    if config.WEBHOOK_URL:
+    webhook_url = config.get_webhook_url()
+    if webhook_url:
         # Webhook mode
         dp.startup.register(on_startup)
         dp.shutdown.register(on_shutdown)
         
         app = web.Application()
+        
+        # Add health check endpoint for Render
+        async def health_check(request):
+            return web.json_response({
+                "status": "healthy",
+                "timestamp": datetime.now().isoformat(),
+                "service": "VetSupport AI Bot"
+            })
+        
+        app.router.add_get("/health", health_check)
+        
         webhook_requests_handler = SimpleRequestHandler(
             dispatcher=dp,
             bot=bot,

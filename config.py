@@ -35,7 +35,7 @@ class Config:
     
     # Server Configuration
     HOST = os.getenv("HOST", "0.0.0.0")
-    PORT = int(os.getenv("PORT", 8000))
+    PORT = int(os.getenv("PORT", 10000))
     
     # Security
     SECRET_KEY = os.getenv("SECRET_KEY", "your_secret_key_here")
@@ -56,6 +56,19 @@ class Config:
     # Legal Updates
     LEGAL_API_URL = os.getenv("LEGAL_API_URL", "")
     GOVERNMENT_API_KEY = os.getenv("GOVERNMENT_API_KEY", "")
+    
+    # Render-specific settings
+    RENDER_EXTERNAL_URL = os.getenv("RENDER_EXTERNAL_URL", "")
+    
+    @classmethod
+    def get_webhook_url(cls):
+        """Get webhook URL with fallback to Render external URL"""
+        if cls.WEBHOOK_URL:
+            return cls.WEBHOOK_URL
+        elif cls.RENDER_EXTERNAL_URL:
+            return cls.RENDER_EXTERNAL_URL
+        else:
+            return ""
 
 # Initialize configuration
 config = Config()

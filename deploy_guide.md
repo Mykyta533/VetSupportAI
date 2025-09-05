@@ -5,7 +5,7 @@
 1. **Python 3.10+** installed
 2. **PostgreSQL** database or **Firebase** account
 3. **API Keys** for required services
-4. **Hosting platform** account (Replit/Render)
+4. **Hosting platform** account (Render/Replit)
 
 ## 🔑 Required API Keys
 
@@ -30,7 +30,52 @@
 
 ## 🚀 Deployment Options
 
-### Option 1: Replit Deployment
+### Option 1: Render Deployment (Recommended)
+
+1. **Create Render Account**
+   - Go to [render.com](https://render.com)
+   - Sign up for free account
+   - Connect your GitHub account
+
+2. **Prepare Repository**
+   - Push your code to GitHub repository
+   - Ensure all files are committed including `render.yaml`
+
+3. **Create PostgreSQL Database**
+   - In Render dashboard, click "New +"
+   - Select "PostgreSQL"
+   - Choose plan (Free tier available)
+   - Note down the connection details
+
+4. **Deploy Web Service**
+   - Click "New +" → "Web Service"
+   - Connect your GitHub repository
+   - Render will auto-detect Python and use `render.yaml`
+   - Or manually configure:
+     - **Name**: vetsupport-ai-bot
+     - **Environment**: Python 3
+     - **Build Command**: `pip install -r requirements.txt`
+     - **Start Command**: `python bot.py`
+
+5. **Configure Environment Variables**
+   In Render dashboard, add these environment variables:
+   ```bash
+   BOT_TOKEN=your_telegram_bot_token
+   DATABASE_URL=postgresql://user:pass@host:port/dbname
+   GEMINI_API_KEY=your_gemini_key
+   WEBHOOK_URL=https://your-app-name.onrender.com
+   WEBHOOK_SECRET=your_secret_key
+   HOST=0.0.0.0
+   PORT=10000
+   ```
+
+6. **Deploy**
+   - Click "Create Web Service"
+   - Render will automatically build and deploy
+   - Monitor logs for any issues
+   - Your bot will be available at `https://your-app-name.onrender.com`
+
+### Option 2: Replit Deployment
 
 1. **Create New Repl**
    - Go to [replit.com](https://replit.com)
@@ -58,33 +103,6 @@
 4. **Run Bot**
    ```bash
    python bot.py
-   ```
-
-### Option 2: Render Deployment
-
-1. **Create Account**
-   - Go to [render.com](https://render.com)
-   - Sign up for free account
-
-2. **Create Web Service**
-   - Click "New +"
-   - Select "Web Service"
-   - Connect your GitHub repository
-
-3. **Configure Service**
-   - **Name**: vetsupport-ai-bot
-   - **Environment**: Python 3
-   - **Build Command**: `pip install -r requirements.txt`
-   - **Start Command**: `python bot.py`
-
-4. **Environment Variables**
-   Add in Render dashboard:
-   ```bash
-   BOT_TOKEN=your_telegram_bot_token
-   DATABASE_URL=postgresql://user:pass@host:port/dbname
-   GEMINI_API_KEY=your_gemini_key
-   WEBHOOK_URL=https://vetsupport-ai-bot.onrender.com
-   PORT=8000
    ```
 
 ### Option 3: Local Development
@@ -139,6 +157,12 @@
 
 ### Free Database Options
 
+1. **Render PostgreSQL** (Recommended for Render deployment)
+   - Built-in PostgreSQL service
+   - Free tier available
+   - Automatic backups
+   - Easy integration with web services
+
 1. **ElephantSQL** (Free PostgreSQL)
    - Go to [elephantsql.com](https://elephantsql.com)
    - Create free "Tiny Turtle" plan
@@ -163,7 +187,7 @@ Edit `config.py` with your settings:
 ```python
 # Bot Configuration
 BOT_TOKEN = "your_bot_token_here"
-WEBHOOK_URL = "https://yourdomain.com"  # For webhook mode
+WEBHOOK_URL = "https://your-app-name.onrender.com"  # For webhook mode
 WEBHOOK_SECRET = "your_webhook_secret"
 
 # Database
@@ -202,6 +226,7 @@ For production deployment, consider:
 - Set `WEBHOOK_URL` environment variable
 - Bot will automatically use webhook mode
 - Better for production (faster, more reliable)
+- Required for Render deployment
 
 ### Polling Mode (Good for Development)
 - Don't set `WEBHOOK_URL` or leave it empty
@@ -219,10 +244,10 @@ DATABASE_URL=            # PostgreSQL connection string
 ### Optional Variables
 ```bash
 # Webhook Configuration
-WEBHOOK_URL=             # Your domain for webhook (https://yourdomain.com)
+WEBHOOK_URL=             # Your domain for webhook (https://your-app.onrender.com)
 WEBHOOK_SECRET=          # Secret for webhook validation
 HOST=0.0.0.0            # Server host (default: 0.0.0.0)
-PORT=8000               # Server port (default: 8000)
+PORT=10000              # Server port (default: 10000 for Render)
 
 # AI Services
 GEMINI_API_KEY=         # Google Gemini API key
@@ -269,6 +294,32 @@ async def health_check(request):
 app.router.add_get("/health", health_check)
 ```
 
+## 🔧 Render-Specific Configuration
+
+### Automatic Deployment
+- Render automatically detects `render.yaml` configuration
+- Supports automatic deployments from GitHub
+- Built-in PostgreSQL integration
+- Free SSL certificates
+
+### Environment Variables in Render
+1. Go to your service dashboard
+2. Click "Environment" tab
+3. Add variables one by one
+4. Mark sensitive variables as "Secret"
+
+### Monitoring in Render
+- Built-in logs viewer
+- Metrics dashboard
+- Health check monitoring
+- Automatic restarts on failure
+
+### Render Free Tier Limitations
+- Services sleep after 15 minutes of inactivity
+- 750 hours per month (enough for continuous operation)
+- 512MB RAM limit
+- Consider upgrading for production use
+
 ## 🐛 Troubleshooting
 
 ### Common Issues
@@ -282,6 +333,7 @@ app.router.add_get("/health", health_check)
    - Verify WEBHOOK_URL is accessible
    - Check webhook secret matches
    - Ensure HTTPS is used
+   - For Render: Use the provided .onrender.com URL
 
 3. **AI Services Not Responding**
    - Verify API keys are correct
@@ -292,6 +344,7 @@ app.router.add_get("/health", health_check)
    - Check bot token is valid
    - Verify bot is not blocked
    - Check server logs for errors
+   - For Render: Check service logs in dashboard
 
 ### Debugging Commands
 
@@ -304,7 +357,24 @@ curl https://api.telegram.org/bot<TOKEN>/getWebhookInfo
 
 # Check database connection
 python -c "import asyncpg; print('DB connection test')"
+
+# Test Render health endpoint
+curl https://your-app-name.onrender.com/health
 ```
+
+## 🎯 Render Deployment Checklist
+
+- [ ] GitHub repository created and code pushed
+- [ ] `render.yaml` file configured
+- [ ] PostgreSQL database created in Render
+- [ ] Web service created and connected to repository
+- [ ] All environment variables configured
+- [ ] Bot token obtained from @BotFather
+- [ ] Webhook URL set to Render service URL
+- [ ] Health check endpoint responding
+- [ ] Database connection working
+- [ ] Bot responds to `/start` command
+- [ ] Logs show no critical errors
 
 ## 📊 Monitoring & Maintenance
 
@@ -314,6 +384,7 @@ python -c "import asyncpg; print('DB connection test')"
    - Use services like UptimeRobot
    - Monitor webhook endpoint
    - Alert on downtime
+   - For Render: Monitor the /health endpoint
 
 2. **Error Tracking**
    - Integrate with Sentry or similar
@@ -349,10 +420,11 @@ If you need help with deployment:
 1. Check the [GitHub Issues](link-to-issues)
 2. Join our [Telegram Support Group](link-to-group)
 3. Contact development team
+4. Check Render documentation at [render.com/docs](https://render.com/docs)
 
 ---
 
-## ✅ Deployment Checklist
+## ✅ General Deployment Checklist
 
 - [ ] Bot token obtained from @BotFather
 - [ ] Database set up and accessible

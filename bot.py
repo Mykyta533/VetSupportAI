@@ -70,6 +70,7 @@ async def on_startup():
         webhook_base_url = config.get_webhook_url()
         if webhook_base_url:
             webhook_url = f"{webhook_base_url}{config.WEBHOOK_PATH}"
+            webhook_url = f"{webhook_base_url}{config.WEBHOOK_PATH}"
             await bot.set_webhook(
                 url=webhook_url,
                 secret_token=config.WEBHOOK_SECRET
@@ -126,11 +127,23 @@ async def main():
     
     webhook_url = config.get_webhook_url()
     if webhook_url:
+    if webhook_url:
         # Webhook mode
         dp.startup.register(on_startup)
         dp.shutdown.register(on_shutdown)
         
         app = web.Application()
+        
+        # Add health check endpoint for Render
+        async def health_check(request):
+            return web.json_response({
+                "status": "healthy",
+                "timestamp": datetime.now().isoformat(),
+                "service": "VetSupport AI Bot"
+            })
+        
+        app.router.add_get("/health", health_check)
+        
         
         # Add health check endpoint for Render
         async def health_check(request):

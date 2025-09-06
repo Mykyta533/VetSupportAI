@@ -291,7 +291,7 @@ async def detailed_report(callback: CallbackQuery, language: str = "uk"):
         report_text += f"\n• {get_text('total_checkins', language)}: {user_stats.get('total_check_ins', 0)}"
         report_text += f"\n• {get_text('average_mood', language)}: {user_stats.get('average_mood', 0):.1f}/10"
         report_text += f"\n• {get_text('current_streak', language)}: {user_stats.get('streak_days', 0)} {get_text('days', language)}"
-        report_text += f"\n• {get_text('mood_trend', language)}: {get_text(f'trend_{user_stats.get('mood_trend', 'stable')}', language)}"
+        report_text += f"\n• {get_text('mood_trend', language)}: {get_text(f'trend_{user_stats.get("mood_trend", "stable")}', language)}"
         
         # AI Chat stats
         report_text += f"\n\n🤖 {get_text('ai_interactions', language)}:"

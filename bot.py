@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import os
 from datetime import datetime
 
 from aiogram import Bot, Dispatcher
@@ -35,47 +36,58 @@ from utils.middleware import (
     LanguageMiddleware
 )
 
-# Configure logging
+# Налаштування логування
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
 
-# Validate BOT_TOKEN before initializing Bot
-bot_token = config.get('BOT_TOKEN')
-if not bot_token:
-    logger.error("BOT_TOKEN is not set in config or environment variables")
-    raise ValueError("BOT_TOKEN is not set. Please check environment variables or config.")
+# Перевірка обов’язкових змінних середовища
+required_env_vars = ['BOT_TOKEN', 'DATABASE_URL']
+for var in required_env_vars:
+    if not config.get(var):
+        logger.error(f"Відсутня обов’язкова змінна середовища: {var}")
+        raise ValueError(f"Змінна середовища {var} не встановлена")
 
-logger.info(f"Loaded BOT_TOKEN: {bot_token[:10]}...")  # Log first 10 chars of token for debug
+# Логування BOT_TOKEN для дебагу (перші 10 символів)
+logger.info(f"Завантажено BOT_TOKEN: {config['BOT_TOKEN'][:10]}...")
 
-# Initialize bot and dispatcher
+# Логування порту для дебагу
+port = config.get('PORT', '10000')
+logger.info(f"Використовується порт: {port}")
+
+# Ініціалізація бота та диспетчера
 try:
     bot = Bot(
-        token=bot_token,
+        token=config['BOT_TOKEN'],
         default=DefaultBotProperties(parse_mode=ParseMode.HTML)
     )
 except Exception as e:
-    logger.error(f"Failed to initialize Bot: {e}")
+    logger.error(f"Не вдалося ініціалізувати бота: {e}")
     raise
 
 dp = Dispatcher(storage=MemoryStorage())
 
 async def on_startup(bot: Bot):
-    """Initialize bot on startup"""
+    """Ініціалізація бота при старті"""
     try:
-        db_manager = DatabaseManager()
-        await db_manager.init_database()
-        
-        # Comment out LegalUpdater to avoid LEGAL_API_URL error
+        # Ініціалізація бази даних
+        if config['DATABASE_URL']:
+            db_manager = DatabaseManager()
+            await db_manager.init_database()
+            logger.info("База даних успішно ініціалізована")
+        else:
+            logger.warning("DATABASE_URL не встановлено, пропускаємо ініціалізацію бази даних")
+
+        # Закоментований LegalUpdater для уникнення помилки LEGAL_API_URL
         # legal_updater = LegalUpdater()
         # await legal_updater.update_legal_content()
         
         marketing_manager = MarketingManager()
-        
         start_scheduler()
-        
+
+        # Налаштування вебхука або polling
         webhook_base_url = config.get('WEBHOOK_URL')
         if webhook_base_url:
             webhook_url = f"{webhook_base_url}{config['WEBHOOK_PATH']}"
@@ -83,30 +95,31 @@ async def on_startup(bot: Bot):
                 url=webhook_url,
                 secret_token=config['WEBHOOK_SECRET']
             )
-            logger.info(f"Webhook set to {webhook_url}")
+            logger.info(f"Вебхук встановлено на {webhook_url}")
         else:
-            logger.warning("WEBHOOK_URL is not set, running in polling mode")
-            
-        logger.info("Bot started successfully!")
+            logger.info("WEBHOOK_URL не встановлено, запускаємо в режимі polling")
+            asyncio.create_task(dp.start_polling(bot))
+
+        logger.info("Бот успішно запущено!")
         
     except Exception as e:
-        logger.error(f"Error during startup: {e}")
+        logger.error(f"Помилка під час запуску: {e}")
         raise
 
 async def on_shutdown(bot: Bot):
-    """Cleanup on shutdown"""
+    """Очищення при завершенні роботи"""
     try:
         if config.get('WEBHOOK_URL'):
             await bot.delete_webhook()
         
         await bot.session.close()
-        logger.info("Bot shutdown completed!")
+        logger.info("Завершення роботи бота виконано!")
         
     except Exception as e:
-        logger.error(f"Error during shutdown: {e}")
+        logger.error(f"Помилка під час завершення роботи: {e}")
 
 def setup_handlers():
-    """Register all handlers"""
+    """Реєстрація всіх обробників"""
     dp.message.middleware(DatabaseMiddleware())
     dp.callback_query.middleware(DatabaseMiddleware())
     dp.message.middleware(ThrottlingMiddleware())
@@ -131,8 +144,7 @@ def setup_handlers():
 
 def create_app() -> web.Application:
     """
-    This function creates an aiohttp web application and
-    registers handlers and middleware.
+    Створює веб-додаток aiohttp та реєструє обробники і middleware.
     """
     setup_handlers()
     
@@ -148,7 +160,30 @@ def create_app() -> web.Application:
             "service": "VetSupport AI Bot"
         })
     
+    async def status(request):
+        return web.json_response({
+            "status": "running",
+            "webhook": bool(config.get('WEBHOOK_URL')),
+            "timestamp": datetime.now().isoformat()
+        })
+    
+    async def db_status(request):
+        status = "not_configured"
+        if config.get('DATABASE_URL'):
+            try:
+                db_manager = DatabaseManager()
+                await db_manager.init_database()
+                status = "connected"
+            except Exception as e:
+                status = f"error: {str(e)}"
+        return web.json_response({
+            "database_status": status,
+            "timestamp": datetime.now().isoformat()
+        })
+    
     app.router.add_get("/health", health_check)
+    app.router.add_get("/status", status)
+    app.router.add_get("/db-status", db_status)
     
     webhook_requests_handler = SimpleRequestHandler(
         dispatcher=dp,
@@ -161,4 +196,6 @@ def create_app() -> web.Application:
     
     return app
 
-app = create_app()
+if __name__ == "__main__":
+    app = create_app()
+    web.run_app(app, host=config.get('HOST', '0.0.0.0'), port=int(config.get('PORT', 10000)))

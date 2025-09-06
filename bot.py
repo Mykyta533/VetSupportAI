@@ -42,11 +42,24 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# Validate BOT_TOKEN before initializing Bot
+bot_token = config.get('BOT_TOKEN')
+if not bot_token:
+    logger.error("BOT_TOKEN is not set in config or environment variables")
+    raise ValueError("BOT_TOKEN is not set. Please check environment variables or config.")
+
+logger.info(f"Loaded BOT_TOKEN: {bot_token[:10]}...")  # Log first 10 chars of token for debug
+
 # Initialize bot and dispatcher
-bot = Bot(
-    token=config['BOT_TOKEN'],
-    default=DefaultBotProperties(parse_mode=ParseMode.HTML)
-)
+try:
+    bot = Bot(
+        token=bot_token,
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+    )
+except Exception as e:
+    logger.error(f"Failed to initialize Bot: {e}")
+    raise
+
 dp = Dispatcher(storage=MemoryStorage())
 
 async def on_startup(bot: Bot):
@@ -55,8 +68,9 @@ async def on_startup(bot: Bot):
         db_manager = DatabaseManager()
         await db_manager.init_database()
         
-        legal_updater = LegalUpdater()
-        await legal_updater.update_legal_content()
+        # Comment out LegalUpdater to avoid LEGAL_API_URL error
+        # legal_updater = LegalUpdater()
+        # await legal_updater.update_legal_content()
         
         marketing_manager = MarketingManager()
         
@@ -70,6 +84,8 @@ async def on_startup(bot: Bot):
                 secret_token=config['WEBHOOK_SECRET']
             )
             logger.info(f"Webhook set to {webhook_url}")
+        else:
+            logger.warning("WEBHOOK_URL is not set, running in polling mode")
             
         logger.info("Bot started successfully!")
         

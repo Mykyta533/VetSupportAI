@@ -127,7 +127,7 @@ async def monthly_stats(callback: CallbackQuery, language: str = "uk"):
             average_mood=f"{stats.get('average_mood', 0):.1f}",
             streak_days=stats.get("streak_days", 0),
             ai_chats=stats.get("ai_chats_count", 0),
-            mood_trend=get_text(f"trend_{stats.get('mood_trend', 'stable')}", language)
+            mood_trend=get_text(f'trend_{stats.get("mood_trend", "stable")}', language)
         )
         
         # Add insights

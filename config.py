@@ -24,12 +24,19 @@ config = {
     "SECRET_KEY": os.getenv("SECRET_KEY", ""),
 }
 
-# Перевірка обов’язкових змінних середовища
-for key in ["BOT_TOKEN", "DATABASE_URL"]:
-    if not config[key]:
-        raise ValueError(f"Критична змінна середовища {key} не встановлена")
-from datetime import datetime
+# Логування значень змінних для дебагу
+for key, value in config.items():
+    if key == "BOT_TOKEN":
+        logger.info(f"{key}: {value[:10]}...")  # Логуємо перші 10 символів для безпеки
+    else:
+        logger.info(f"{key}: {value}")
 
+# Перевірка тільки BOT_TOKEN як обов’язкової змінної
+if not config["BOT_TOKEN"]:
+    logger.error("Критична змінна середовища BOT_TOKEN не встановлена")
+    raise ValueError("Критична змінна середовища BOT_TOKEN не встановлена")
+
+from datetime import datetime
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode

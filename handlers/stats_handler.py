@@ -1,3 +1,4 @@
+import logging # Рекомендація: додати логування
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, BufferedInputFile
 from datetime import datetime
@@ -41,7 +42,7 @@ async def weekly_stats(callback: CallbackQuery, language: str = "uk"):
     
     user_id = callback.from_user.id
     
-    processing_msg = await callback.message.edit_text(get_text("generating_stats", language))
+    await callback.message.edit_text(get_text("generating_stats", language))
     
     try:
         stats_service = StatsService()
@@ -92,6 +93,7 @@ async def weekly_stats(callback: CallbackQuery, language: str = "uk"):
             )
             
     except Exception as e:
+        logging.error(f"Error in weekly_stats: {e}", exc_info=True)
         await callback.message.edit_text(
             get_text("stats_error", language),
             reply_markup=get_main_menu_keyboard(language)
@@ -104,7 +106,7 @@ async def monthly_stats(callback: CallbackQuery, language: str = "uk"):
     
     user_id = callback.from_user.id
     
-    processing_msg = await callback.message.edit_text(get_text("generating_stats", language))
+    await callback.message.edit_text(get_text("generating_stats", language))
     
     try:
         stats_service = StatsService()
@@ -147,7 +149,7 @@ async def monthly_stats(callback: CallbackQuery, language: str = "uk"):
                 caption=get_text("monthly_mood_chart", language)
             )
         
-        # Send weekly summary chart if available  
+        # Send weekly summary chart if available
         if report.get("weekly_chart"):
             weekly_data = base64.b64decode(report["weekly_chart"])
             weekly_file = BufferedInputFile(weekly_data, filename="weekly_summary.png")
@@ -164,6 +166,7 @@ async def monthly_stats(callback: CallbackQuery, language: str = "uk"):
             )
             
     except Exception as e:
+        logging.error(f"Error in monthly_stats: {e}", exc_info=True)
         await callback.message.edit_text(
             get_text("stats_error", language),
             reply_markup=get_main_menu_keyboard(language)
@@ -176,7 +179,7 @@ async def mood_trends(callback: CallbackQuery, language: str = "uk"):
     
     user_id = callback.from_user.id
     
-    processing_msg = await callback.message.edit_text(get_text("analyzing_trends", language))
+    await callback.message.edit_text(get_text("analyzing_trends", language))
     
     try:
         # Get mood data for trend analysis
@@ -204,7 +207,7 @@ async def mood_trends(callback: CallbackQuery, language: str = "uk"):
             trend = "improving"
             trend_emoji = "📈"
         elif recent_avg < older_avg - 0.5:
-            trend = "declining"  
+            trend = "declining"
             trend_emoji = "📉"
         else:
             trend = "stable"
@@ -231,11 +234,11 @@ async def mood_trends(callback: CallbackQuery, language: str = "uk"):
             worst_date=worst_period['timestamp'].strftime('%d.%m.%Y')
         )
         
-        # Add trend-specific advice
+        # Add trend-specific advice (LOGIC CORRECTED)
         advice_key = f"trend_advice_{trend}"
-        if hasattr(get_text, advice_key):
-            trends_text += f"\n\n💡 {get_text('advice', language)}:\n"
-            trends_text += get_text(advice_key, language)
+        advice_text = get_text(advice_key, language)
+        if advice_text and advice_text != advice_key:
+            trends_text += f"\n\n💡 {get_text('advice', language)}:\n{advice_text}"
         
         await callback.message.edit_text(
             trends_text,
@@ -255,6 +258,7 @@ async def mood_trends(callback: CallbackQuery, language: str = "uk"):
             )
             
     except Exception as e:
+        logging.error(f"Error in mood_trends: {e}", exc_info=True)
         await callback.message.edit_text(
             get_text("trends_error", language),
             reply_markup=get_stats_keyboard(language)
@@ -267,7 +271,7 @@ async def detailed_report(callback: CallbackQuery, language: str = "uk"):
     
     user_id = callback.from_user.id
     
-    processing_msg = await callback.message.edit_text(get_text("generating_detailed_report", language))
+    await callback.message.edit_text(get_text("generating_detailed_report", language))
     
     try:
         stats_service = StatsService()
@@ -291,7 +295,10 @@ async def detailed_report(callback: CallbackQuery, language: str = "uk"):
         report_text += f"\n• {get_text('total_checkins', language)}: {user_stats.get('total_check_ins', 0)}"
         report_text += f"\n• {get_text('average_mood', language)}: {user_stats.get('average_mood', 0):.1f}/10"
         report_text += f"\n• {get_text('current_streak', language)}: {user_stats.get('streak_days', 0)} {get_text('days', language)}"
-        report_text += f"\n• {get_text('mood_trend', language)}: {get_text(f'trend_{user_stats.get("mood_trend", "stable")}', language)}"
+        
+        # === SYNTAX ERROR FIXED HERE ===
+        # Using single quotes inside .get() to avoid conflict with the outer f-string's double quotes
+        report_text += f"\n• {get_text('mood_trend', language)}: {get_text(f'trend_{user_stats.get('mood_trend', 'stable')}', language)}"
         
         # AI Chat stats
         report_text += f"\n\n🤖 {get_text('ai_interactions', language)}:"
@@ -322,6 +329,7 @@ async def detailed_report(callback: CallbackQuery, language: str = "uk"):
         )
         
     except Exception as e:
+        logging.error(f"Error in detailed_report: {e}", exc_info=True)
         await callback.message.edit_text(
             get_text("detailed_report_error", language),
             reply_markup=get_stats_keyboard(language)

@@ -83,7 +83,7 @@
    - Choose "Import from GitHub" or upload files
 
 2. **Environment Variables**
-   - Go to "Secrets" tab (🔒 icon)
+   - Go to "Secrets" tab (lock icon)
    - Add all required environment variables:
 
    ```bash

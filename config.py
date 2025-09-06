@@ -10,23 +10,23 @@
 ## 🔑 Required API Keys
 
 ### Essential Keys
-- **Telegram Bot Token** - Get from @BotFather
-- **Database URL** - PostgreSQL connection string or Firebase credentials
+#- **Telegram Bot Token** - Get from @BotFather
+#- **Database URL** - PostgreSQL connection string or Firebase credentials
 
 ### AI Services (Choose at least one)
-- **Gemini API Key** - Google AI Studio
-- **OpenAI API Key** - OpenAI Platform
-- **Grok API Key** - X Developer Portal
+#- **Gemini API Key** - Google AI Studio
+#- **OpenAI API Key** - OpenAI Platform
+#- **Grok API Key** - X Developer Portal
 
 ### Voice Services (Optional)
-- **ElevenLabs API Key** - For premium voice synthesis
-- **Google TTS Key** - For text-to-speech
-- **Whisper API Key** - Usually same as OpenAI key
+#- **ElevenLabs API Key** - For premium voice synthesis
+#- **Google TTS Key** - For text-to-speech
+#- **Whisper API Key** - Usually same as OpenAI key
 
 ### Integrations (Optional)
-- **Helsi API Key** - Telemedicine integration
-- **Doctor Online API Key** - Alternative telemedicine
-- **Social Media Tokens** - For marketing automation
+#- **Helsi API Key** - Telemedicine integration
+#- **Doctor Online API Key** - Alternative telemedicine
+#- **Social Media Tokens** - For marketing automation
 
 ## 🚀 Deployment Options
 

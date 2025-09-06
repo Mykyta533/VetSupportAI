@@ -143,7 +143,8 @@ async def crisis_hotline_direct(callback: CallbackQuery, language: str = "uk"):
     crisis_text += f"📞 **{get_text('emergency_services', language, default='Швидка допомога')}**\n"
     crisis_text += f"☎️ 103\n\n"
     
-    crisis_text += f"❤️ **{get_text('remember', language, default='Пам\'ятайте')}:**\n"
+    remember_text = get_text('remember', language, default="Пам'ятайте")
+    crisis_text += f"❤️ **{remember_text}:**\n"
     crisis_text += get_text("crisis_remember_text", language,
                            default="• Ви не самі\n• Ваше життя має цінність\n• Допомога завжди доступна\n• Кризи минають")
     

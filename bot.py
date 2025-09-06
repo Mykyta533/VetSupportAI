@@ -127,7 +127,6 @@ async def main():
     
     webhook_url = config.get_webhook_url()
     if webhook_url:
-    if webhook_url:
         # Webhook mode
         dp.startup.register(on_startup)
         dp.shutdown.register(on_shutdown)

@@ -44,7 +44,7 @@ logger = logging.getLogger(__name__)
 
 # Initialize bot and dispatcher
 bot = Bot(
-    token=config.BOT_TOKEN,
+    token=config['BOT_TOKEN'],
     default=DefaultBotProperties(parse_mode=ParseMode.HTML)
 )
 dp = Dispatcher(storage=MemoryStorage())
@@ -62,12 +62,12 @@ async def on_startup(bot: Bot):
         
         start_scheduler()
         
-        webhook_base_url = config.get_webhook_url()
+        webhook_base_url = config.get('WEBHOOK_URL')
         if webhook_base_url:
-            webhook_url = f"{webhook_base_url}{config.WEBHOOK_PATH}"
+            webhook_url = f"{webhook_base_url}{config['WEBHOOK_PATH']}"
             await bot.set_webhook(
                 url=webhook_url,
-                secret_token=config.WEBHOOK_SECRET
+                secret_token=config['WEBHOOK_SECRET']
             )
             logger.info(f"Webhook set to {webhook_url}")
             
@@ -80,7 +80,7 @@ async def on_startup(bot: Bot):
 async def on_shutdown(bot: Bot):
     """Cleanup on shutdown"""
     try:
-        if config.get_webhook_url():
+        if config.get('WEBHOOK_URL'):
             await bot.delete_webhook()
         
         await bot.session.close()
@@ -137,10 +137,10 @@ def create_app() -> web.Application:
     webhook_requests_handler = SimpleRequestHandler(
         dispatcher=dp,
         bot=bot,
-        secret_token=config.WEBHOOK_SECRET
+        secret_token=config['WEBHOOK_SECRET']
     )
     
-    webhook_requests_handler.register(app, path=config.WEBHOOK_PATH)
+    webhook_requests_handler.register(app, path=config['WEBHOOK_PATH'])
     setup_application(app, dp, bot=bot)
     
     return app

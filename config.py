@@ -33,29 +33,29 @@
 ### Option 1: Render Deployment (Recommended)
 
 #1. **Create Render Account**
-   - Go to [render.com](https://render.com)
-   - Sign up for free account
-   - Connect your GitHub account
+  # - Go to [render.com](https://render.com)
+  # - Sign up for free account
+  # - Connect your GitHub account
 
 #2. **Prepare Repository**
-   - Push your code to GitHub repository
-   - Ensure all files are committed including `render.yaml`
+  # - Push your code to GitHub repository
+  # - Ensure all files are committed including `render.yaml`
 
 #3. **Create PostgreSQL Database**
-   - In Render dashboard, click "New +"
-   - Select "PostgreSQL"
-   - Choose plan (Free tier available)
-   - Note down the connection details
+  # - In Render dashboard, click "New +"
+  # - Select "PostgreSQL"
+  # - Choose plan (Free tier available)
+  # - Note down the connection details
 
 #4. **Deploy Web Service**
-   - Click "New +" to "Web Service"
-   - Connect your GitHub repository
-   - Render will auto-detect Python and use `render.yaml`
-   - Or manually configure:
-     - **Name**: vetsupport-ai-bot
-     - **Environment**: Python 3
-     - **Build Command**: `pip install -r requirements.txt`
-     - **Start Command**: `python bot.py`
+  # - Click "New +" to "Web Service"
+  # - Connect your GitHub repository
+  # - Render will auto-detect Python and use `render.yaml`
+  # - Or manually configure:
+    # - **Name**: vetsupport-ai-bot
+    # - **Environment**: Python 3
+    # - **Build Command**: `pip install -r requirements.txt`
+    # - **Start Command**: `python bot.py`
 
 #5. **Configure Environment Variables**
    In Render dashboard, add these environment variables:

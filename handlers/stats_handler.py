@@ -298,7 +298,10 @@ async def detailed_report(callback: CallbackQuery, language: str = "uk"):
         
         # === SYNTAX ERROR FIXED HERE ===
         # Using single quotes inside .get() to avoid conflict with the outer f-string's double quotes
-        report_text += f"\n• {get_text('mood_trend', language)}: {get_text(f'trend_{user_stats.get("mood_trend", "stable")}', language)}"
+        mood_trend_value = user_stats.get('mood_trend', 'stable')
+        trend_text_key = f'trend_{mood_trend_value}'
+        translated_trend = get_text(trend_text_key, language)
+        report_text += f"\n• {get_text('mood_trend', language)}: {translated_trend}"
         
         # AI Chat stats
         report_text += f"\n\n🤖 {get_text('ai_interactions', language)}:"

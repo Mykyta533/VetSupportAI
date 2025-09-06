@@ -32,22 +32,22 @@
 
 ### Option 1: Render Deployment (Recommended)
 
-1. **Create Render Account**
+#1. **Create Render Account**
    - Go to [render.com](https://render.com)
    - Sign up for free account
    - Connect your GitHub account
 
-2. **Prepare Repository**
+#2. **Prepare Repository**
    - Push your code to GitHub repository
    - Ensure all files are committed including `render.yaml`
 
-3. **Create PostgreSQL Database**
+#3. **Create PostgreSQL Database**
    - In Render dashboard, click "New +"
    - Select "PostgreSQL"
    - Choose plan (Free tier available)
    - Note down the connection details
 
-4. **Deploy Web Service**
+#4. **Deploy Web Service**
    - Click "New +" to "Web Service"
    - Connect your GitHub repository
    - Render will auto-detect Python and use `render.yaml`
@@ -57,7 +57,7 @@
      - **Build Command**: `pip install -r requirements.txt`
      - **Start Command**: `python bot.py`
 
-5. **Configure Environment Variables**
+#5. **Configure Environment Variables**
    In Render dashboard, add these environment variables:
    ```bash
    BOT_TOKEN=your_telegram_bot_token
@@ -69,7 +69,7 @@
    PORT=10000
    ```
 
-6. **Deploy**
+#6. **Deploy**
    - Click "Create Web Service"
    - Render will automatically build and deploy
    - Monitor logs for any issues
@@ -77,12 +77,12 @@
 
 ### Option 2: Replit Deployment
 
-1. **Create New Repl**
+#1. **Create New Repl**
    - Go to [replit.com](https://replit.com)
    - Click "Create Repl"
    - Choose "Import from GitHub" or upload files
 
-2. **Environment Variables**
+#2. **Environment Variables**
    - Go to "Secrets" tab (lock icon)
    - Add all required environment variables:
 
@@ -95,25 +95,25 @@
    WEBHOOK_SECRET=your_secret_key
    ```
 
-3. **Install Dependencies**
+#3. **Install Dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Run Bot**
+#4. **Run Bot**
    ```bash
    python bot.py
    ```
 
 ### Option 3: Local Development
 
-1. **Clone Repository**
+#1. **Clone Repository**
    ```bash
    git clone <repository-url>
    cd vetsupport-ai-bot
    ```
 
-2. **Create Virtual Environment**
+#2. **Create Virtual Environment**
    ```bash
    python -m venv venv
    source venv/bin/activate  # Linux/Mac
@@ -121,12 +121,12 @@
    venv\Scripts\activate  # Windows
    ```
 
-3. **Install Dependencies**
+#3. **Install Dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Create .env File**
+#4. **Create .env File**
    ```env
    BOT_TOKEN=your_telegram_bot_token
    DATABASE_URL=postgresql://user:pass@localhost:5432/vetsupport
@@ -134,7 +134,7 @@
    OPENAI_API_KEY=your_openai_key
    ```
 
-5. **Run Bot**
+#5. **Run Bot**
    ```bash
    python bot.py
    ```
@@ -143,37 +143,37 @@
 
 ### PostgreSQL Setup
 
-1. **Create Database**
+#1. **Create Database**
    ```sql
    CREATE DATABASE vetsupport;
    CREATE USER vetsupport_user WITH ENCRYPTED PASSWORD 'your_password';
    GRANT ALL PRIVILEGES ON DATABASE vetsupport TO vetsupport_user;
    ```
 
-2. **Connection String Format**
+#2. **Connection String Format**
    ```
    postgresql://username:password@hostname:port/database_name
    ```
 
 ### Free Database Options
 
-1. **Render PostgreSQL** (Recommended for Render deployment)
+#1. **Render PostgreSQL** (Recommended for Render deployment)
    - Built-in PostgreSQL service
    - Free tier available
    - Automatic backups
    - Easy integration with web services
 
-1. **ElephantSQL** (Free PostgreSQL)
+#1. **ElephantSQL** (Free PostgreSQL)
    - Go to [elephantsql.com](https://elephantsql.com)
    - Create free "Tiny Turtle" plan
    - Copy connection URL
 
-2. **Supabase** (Free PostgreSQL + additional features)
+#2. **Supabase** (Free PostgreSQL + additional features)
    - Go to [supabase.com](https://supabase.com)
    - Create new project
    - Get connection string from settings
 
-3. **Railway** (Free PostgreSQL)
+#3. **Railway** (Free PostgreSQL)
    - Go to [railway.app](https://railway.app)
    - Create PostgreSQL service
    - Get connection URL

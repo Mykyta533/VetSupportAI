@@ -183,24 +183,18 @@
 ### Basic Configuration
 
 # Edit `config.py` with your settings:
-
-# This section looks like actual Python code,
-# so I'll leave the code lines uncommented.
-
-# Bot Configuration
-# BOT_TOKEN = "your_bot_token_here"
-# WEBHOOK_URL = "https://your-app-name.onrender.com"  # For webhook mode
-# WEBHOOK_SECRET = "your_webhook_secret"
-
-# Database
-# DATABASE_URL = "postgresql://user:pass@host:port/dbname"
-
-# AI Services
-# GEMINI_API_KEY = "your_gemini_key"
-# OPENAI_API_KEY = "your_openai_key"
-
-# Admin Settings
-# ADMIN_CHAT_ID = "your_admin_user_id"
+#
+# Replace the placeholder values with your actual API keys and URLs
+#
+config = {
+    "BOT_TOKEN": "your_telegram_bot_token",
+    "WEBHOOK_URL": "https://your-app-name.onrender.com",
+    "WEBHOOK_SECRET": "your_webhook_secret",
+    "DATABASE_URL": "postgresql://user:pass@host:port/dbname",
+    "GEMINI_API_KEY": "your_gemini_key",
+    "OPENAI_API_KEY": "your_openai_key",
+    "ADMIN_CHAT_ID": "your_admin_user_id",
+}
 
 ### Advanced Configuration
 

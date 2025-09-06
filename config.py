@@ -390,7 +390,7 @@
 #2. Join our [Telegram Support Group](link-to-group)
 #3. Contact development team
 
----
+#---
 
 ## ✅ Deployment Checklist
 

@@ -1,403 +1,207 @@
-# VetSupport AI Bot - Deployment Guide
-
-## 📋 Prerequisites
-
-#1. **Python 3.10+** installed
-#2. **PostgreSQL** database or **Firebase** account
-#3. **API Keys** for required services
-#4. **Hosting platform** account (Render/Replit)
-
-## 🔑 Required API Keys
-
-### Essential Keys
-#- **Telegram Bot Token** - Get from @BotFather
-#- **Database URL** - PostgreSQL connection string or Firebase credentials
-
-### AI Services (Choose at least one)
-#- **Gemini API Key** - Google AI Studio
-#- **OpenAI API Key** - OpenAI Platform
-#- **Grok API Key** - X Developer Portal
-
-### Voice Services (Optional)
-#- **ElevenLabs API Key** - For premium voice synthesis
-#- **Google TTS Key** - For text-to-speech
-#- **Whisper API Key** - Usually same as OpenAI key
-
-### Integrations (Optional)
-#- **Helsi API Key** - Telemedicine integration
-#- **Doctor Online API Key** - Alternative telemedicine
-#- **Social Media Tokens** - For marketing automation
-
-## 🚀 Deployment Options
-
-### Option 1: Render Deployment (Recommended)
-
-#1. **Create Render Account**
-# - Go to [render.com](https://render.com)
-# - Sign up for free account
-# - Connect your GitHub account
-
-#2. **Prepare Repository**
-# - Push your code to GitHub repository
-# - Ensure all files are committed including `render.yaml`
-
-#3. **Create PostgreSQL Database**
-# - In Render dashboard, click "New +"
-# - Select "PostgreSQL"
-# - Choose plan (Free tier available)
-# - Note down the connection details
-
-#4. **Deploy Web Service**
-# - Click "New +" to "Web Service"
-# - Connect your GitHub repository
-# - Render will auto-detect Python and use `render.yaml`
-# - Or manually configure:
-# - **Name**: vetsupport-ai-bot
-# - **Environment**: Python 3
-# - **Build Command**: `pip install -r requirements.txt`
-# - **Start Command**: `gunicorn bot:app -w 4 -k uvicorn.workers.UvicornWorker`
-
-#5. **Configure Environment Variables**
-# In Render dashboard, add these environment variables:
-# ```bash
-# BOT_TOKEN=your_telegram_bot_token
-# DATABASE_URL=postgresql://user:pass@host:port/dbname
-# GEMINI_API_KEY=your_gemini_key
-# WEBHOOK_URL=[https://your-app-name.onrender.com](https://your-app-name.onrender.com)
-# WEBHOOK_SECRET=your_secret_key
-# HOST=0.0.0.0
-# PORT=10000
-# ```
-
-#6. **Deploy**
-# - Click "Create Web Service"
-# - Render will automatically build and deploy
-# - Monitor logs for any issues
-# - Your bot will be available at `https://your-app-name.onrender.com`
-
-### Option 2: Replit Deployment
-
-#1. **Create New Repl**
-# - Go to [replit.com](https://replit.com)
-# - Click "Create Repl"
-# - Choose "Import from GitHub" or upload files
-
-#2. **Environment Variables**
-# - Go to "Secrets" tab (lock icon)
-# - Add all required environment variables:
-
-# ```bash
-# BOT_TOKEN=your_telegram_bot_token
-# DATABASE_URL=postgresql://user:pass@host:port/dbname
-# GEMINI_API_KEY=your_gemini_key
-# OPENAI_API_KEY=your_openai_key
-# WEBHOOK_URL=[https://yourrepl.replit.dev](https://yourrepl.replit.dev)
-# WEBHOOK_SECRET=your_secret_key
-# ```
-
-#3. **Install Dependencies**
-# ```bash
-# pip install -r requirements.txt
-# ```
-
-#4. **Run Bot**
-# ```bash
-# python bot.py
-# ```
-
-### Option 3: Local Development
-
-#1. **Clone Repository**
-# ```bash
-# git clone <repository-url>
-# cd vetsupport-ai-bot
-# ```
-
-#2. **Create Virtual Environment**
-# ```bash
-# python -m venv venv
-# source venv/bin/activate  # Linux/Mac
-# # or
-# venv\Scripts\activate  # Windows
-# ```
-
-#3. **Install Dependencies**
-# ```bash
-# pip install -r requirements.txt
-# ```
-
-#4. **Create .env File**
-# ```env
-# BOT_TOKEN=your_telegram_bot_token
-# DATABASE_URL=postgresql://user:pass@localhost:5432/vetsupport
-# GEMINI_API_KEY=your_gemini_key
-# OPENAI_API_KEY=your_openai_key
-# ```
-
-#5. **Run Bot**
-# ```bash
-# python bot.py
-# ```
-
-## 🗄️ Database Setup
-
-### PostgreSQL Setup
-
-#1. **Create Database**
-# ```sql
-# CREATE DATABASE vetsupport;
-# CREATE USER vetsupport_user WITH ENCRYPTED PASSWORD 'your_password';
-# GRANT ALL PRIVILEGES ON DATABASE vetsupport TO vetsupport_user;
-# ```
-
-#2. **Connection String Format**
-# ```
-# postgresql://username:password@hostname:port/database_name
-# ```
-
-### Free Database Options
-
-#1. **Render PostgreSQL** (Recommended for Render deployment)
-# - Built-in PostgreSQL service
-# - Free tier available
-# - Automatic backups
-# - Easy integration with web services
-
-#1. **ElephantSQL** (Free PostgreSQL)
-# - Go to [elephantsql.com](https://elephantsql.com)
-# - Create free "Tiny Turtle" plan
-# - Copy connection URL
-
-#2. **Supabase** (Free PostgreSQL + additional features)
-# - Go to [supabase.com](https://supabase.com)
-# - Create new project
-# - Get connection string from settings
-
-#3. **Railway** (Free PostgreSQL)
-# - Go to [railway.app](https://railway.app)
-# - Create PostgreSQL service
-# - Get connection URL
-
-## 🔧 Configuration
-
-### Basic Configuration
-
-# Edit `config.py` with your settings:
-#
-# Replace the placeholder values with your actual API keys and URLs
-#
-config = {
-    "BOT_TOKEN": "your_telegram_bot_token",
-    "WEBHOOK_URL": "https://your-app-name.onrender.com",
-    "WEBHOOK_SECRET": "your_webhook_secret",
-    "DATABASE_URL": "postgresql://user:pass@host:port/dbname",
-    "GEMINI_API_KEY": "your_gemini_key",
-    "OPENAI_API_KEY": "your_openai_key",
-    "ADMIN_CHAT_ID": "your_admin_user_id",
-}
-
-### Advanced Configuration
-
-# For production deployment, consider:
-
-#1. **Security Settings**
-# - Use strong webhook secret
-# - Enable rate limiting
-# - Set up user verification
-
-#2. **Performance Optimization**
-# - Configure database connection pooling
-# - Enable response caching
-# - Set up CDN for media files
-
-#3. **Monitoring & Logging**
-# - Set up structured logging
-# - Configure error tracking (Sentry)
-# - Monitor bot performance
-
-## 🔄 Webhook vs Polling
-
-### Webhook Mode (Recommended for Production)
-# - Set `WEBHOOK_URL` environment variable
-# - Bot will automatically use webhook mode
-# - Better for production (faster, more reliable)
-# - Required for Render deployment
-
-### Polling Mode (Good for Development)
-# - Don't set `WEBHOOK_URL` or leave it empty
-# - Bot will use long polling
-# - Good for local development and testing
-
-## 📝 Environment Variables Reference
-
-### Required Variables
-# ```bash
-# BOT_TOKEN=                      # Telegram bot token from @BotFather
-# DATABASE_URL=                   # PostgreSQL connection string
-# ```
-
-### Optional Variables
-# ```bash
-# Webhook Configuration
-# WEBHOOK_URL=                   # Your domain for webhook ([https://your-app.onrender.com](https://your-app.onrender.com))
-# WEBHOOK_SECRET=                 # Secret for webhook validation
-# HOST=0.0.0.0                  # Server host (default: 0.0.0.0)
-# PORT=10000                    # Server port (default: 10000 for Render)
-
-# AI Services
-# GEMINI_API_KEY=               # Google Gemini API key
-# OPENAI_API_KEY=               # OpenAI API key
-# GROK_API_KEY=                 # Grok API key
-
-# Voice Services
-# ELEVENLABS_API_KEY=            # ElevenLabs API key
-# GOOGLE_TTS_KEY=                 # Google TTS API key
-# WHISPER_API_KEY=               # Whisper API key (usually same as OpenAI)
-
-# Telemedicine
-# HELSI_API_KEY=                 # Helsi API key
-# DOCTOR_ONLINE_API_KEY=         # Doctor Online API key
-
-# Social Media (for marketing automation)
-# FACEBOOK_TOKEN=                 # Facebook API token
-# INSTAGRAM_TOKEN=               # Instagram API token
-# LINKEDIN_TOKEN=                 # LinkedIn API token
-
-# Admin & Support
-# ADMIN_CHAT_ID=                 # Admin user ID for notifications
-# SUPPORT_CHAT_ID=                 # Support chat ID
-# SECRET_KEY=                   # Secret key for encryption
-# ```
-
-## 🚦 Health Checks
-
-# Add these endpoints to monitor bot health:
-
-#1. **Health Check**: `GET /health`
-#2. **Bot Status**: `GET /status`
-#3. **Database Status**: `GET /db-status`
-
-# Example health check implementation:
-
-# ```python
-# from aiohttp import web
-
-# async def health_check(request):
-#     return web.json_response({"status": "healthy", "timestamp": datetime.now().isoformat()})
-
-# Add to your web app
-# app.router.add_get("/health", health_check)
-# ```
-
-## 🔧 Render-Specific Configuration
-
-### Automatic Deployment
-# - Render automatically detects `render.yaml` configuration
-# - Supports automatic deployments from GitHub
-# - Built-in PostgreSQL integration
-# - Free SSL certificates
-
-### Environment Variables in Render
-#1. Go to your service dashboard
-#2. Click "Environment" tab
-#3. Add variables one by one
-#4. Mark sensitive variables as "Secret"
-
-## 🐛 Troubleshooting
-
-### Common Issues
-
-#1. **Database Connection Errors**
-# - Verify DATABASE_URL format
-# - Check database server status
-# - Ensure user has proper permissions
-
-#2. **Webhook Not Working**
-# - Verify WEBHOOK_URL is accessible
-# - Check webhook secret matches
-# - Ensure HTTPS is used
-
-#3. **AI Services Not Responding**
-# - Verify API keys are correct
-# - Check API quota/limits
-# - Ensure proper API endpoint URLs
-
-#4. **Bot Not Responding**
-# - Check bot token is valid
-# - Verify bot is not blocked
-# - Check server logs for errors
-
-### Debugging Commands
-
-# ```bash
-# Check bot status
-# curl [https://api.telegram.org/bot](https://api.telegram.org/bot)<TOKEN>/getMe
-
-# Test webhook
-# curl [https://api.telegram.org/bot](https://api.telegram.org/bot)<TOKEN>/getWebhookInfo
-
-# Check database connection
-# python -c "import asyncpg; print('DB connection test')"
-# ```
-
-## 📊 Monitoring & Maintenance
-
-### Recommended Monitoring
-
-#1. **Uptime Monitoring**
-# - Use services like UptimeRobot
-# - Monitor webhook endpoint
-# - Alert on downtime
-
-#2. **Error Tracking**
-# - Integrate with Sentry or similar
-# - Track exceptions and errors
-# - Monitor response times
-
-#3. **Usage Analytics**
-# - Track user engagement
-# - Monitor API usage
-# - Analyze bot performance
-
-### Regular Maintenance
-
-#1. **Database Cleanup**
-# - Archive old chat logs
-# - Clean up temporary files
-# - Optimize database queries
-
-#2. **Content Updates**
-# - Update legal information
-# - Refresh recommendations
-# - Update hotline numbers
-
-#3. **Security Updates**
-# - Regular dependency updates
-# - Security patch monitoring
-# - API key rotation
-
-## 🆘 Support
-
-# If you need help with deployment:
-
-#1. Check the [GitHub Issues](link-to-issues)
-#2. Join our [Telegram Support Group](link-to-group)
-#3. Contact development team
-
-#---
-
-## ✅ Deployment Checklist
-
-# - [ ] Bot token obtained from @BotFather
-# - [ ] Database set up and accessible
-# - [ ] All required environment variables configured
-# - [ ] Dependencies installed successfully
-# - [ ] Bot responds to `/start` command
-# - [ ] Webhook configured (for production)
-# - [ ] Health checks working
-# - [ ] Monitoring set up
-# - [ ] Admin notifications configured
-# - [ ] Legal content updated
-# - [ ] Terms & privacy policy reviewed
-
-# **🎉 Your VetSupport AI bot is ready to help Ukrainian veterans!**
+import asyncio
+import logging
+import os
+from datetime import datetime
+
+from aiogram import Bot, Dispatcher
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
+from aiohttp import web
+
+from config import config
+from database.db_manager import DatabaseManager
+from handlers import (
+    start_handler,
+    mood_handler,
+    recommendations_handler,
+    ai_chat_handler,
+    voice_handler,
+    stats_handler,
+    psychologist_handler,
+    legal_handler,
+    telemedicine_handler,
+    premium_handler,
+    hotlines_handler,
+    admin_handler
+)
+from services.scheduler import start_scheduler
+from services.legal_updater import LegalUpdater
+from services.marketing import MarketingManager
+from utils.middleware import (
+    DatabaseMiddleware,
+    ThrottlingMiddleware,
+    LoggingMiddleware,
+    LanguageMiddleware
+)
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+# Validate required environment variables
+required_env_vars = ['BOT_TOKEN']
+for var in required_env_vars:
+    if not config.get(var):
+        logger.error(f"Missing required environment variable: {var}")
+        raise ValueError(f"Environment variable {var} is not set")
+
+# Optional environment variables with defaults
+config.setdefault('WEBHOOK_URL', '')
+config.setdefault('WEBHOOK_PATH', '/webhook')
+config.setdefault('WEBHOOK_SECRET', '')
+config.setdefault('DATABASE_URL', '')
+config.setdefault('GEMINI_API_KEY', '')
+config.setdefault('OPENAI_API_KEY', '')
+config.setdefault('ADMIN_CHAT_ID', '')
+
+# Log BOT_TOKEN for debugging (first 10 chars only for security)
+logger.info(f"Loaded BOT_TOKEN: {config['BOT_TOKEN'][:10]}...")
+
+# Initialize bot and dispatcher
+try:
+    bot = Bot(
+        token=config['BOT_TOKEN'],
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML)
+    )
+except Exception as e:
+    logger.error(f"Failed to initialize Bot: {e}")
+    raise
+
+dp = Dispatcher(storage=MemoryStorage())
+
+async def on_startup(bot: Bot):
+    """Initialize bot on startup"""
+    try:
+        # Initialize database
+        if config['DATABASE_URL']:
+            db_manager = DatabaseManager()
+            await db_manager.init_database()
+            logger.info("Database initialized successfully")
+        else:
+            logger.warning("DATABASE_URL not set, skipping database initialization")
+
+        # Comment out LegalUpdater to avoid LEGAL_API_URL error
+        # legal_updater = LegalUpdater()
+        # await legal_updater.update_legal_content()
+        
+        marketing_manager = MarketingManager()
+        start_scheduler()
+
+        # Set webhook if WEBHOOK_URL is provided, otherwise use polling
+        webhook_base_url = config.get('WEBHOOK_URL')
+        if webhook_base_url:
+            webhook_url = f"{webhook_base_url}{config['WEBHOOK_PATH']}"
+            await bot.set_webhook(
+                url=webhook_url,
+                secret_token=config['WEBHOOK_SECRET']
+            )
+            logger.info(f"Webhook set to {webhook_url}")
+        else:
+            logger.info("WEBHOOK_URL not set, running in polling mode")
+            asyncio.create_task(dp.start_polling(bot))
+
+        logger.info("Bot started successfully!")
+        
+    except Exception as e:
+        logger.error(f"Error during startup: {e}")
+        raise
+
+async def on_shutdown(bot: Bot):
+    """Cleanup on shutdown"""
+    try:
+        if config.get('WEBHOOK_URL'):
+            await bot.delete_webhook()
+        
+        await bot.session.close()
+        logger.info("Bot shutdown completed!")
+        
+    except Exception as e:
+        logger.error(f"Error during shutdown: {e}")
+
+def setup_handlers():
+    """Register all handlers"""
+    dp.message.middleware(DatabaseMiddleware())
+    dp.callback_query.middleware(DatabaseMiddleware())
+    dp.message.middleware(ThrottlingMiddleware())
+    dp.callback_query.middleware(ThrottlingMiddleware())
+    dp.message.middleware(LoggingMiddleware())
+    dp.callback_query.middleware(LoggingMiddleware())
+    dp.message.middleware(LanguageMiddleware())
+    dp.callback_query.middleware(LanguageMiddleware())
+    
+    dp.include_router(start_handler.router)
+    dp.include_router(mood_handler.router)
+    dp.include_router(recommendations_handler.router)
+    dp.include_router(ai_chat_handler.router)
+    dp.include_router(voice_handler.router)
+    dp.include_router(stats_handler.router)
+    dp.include_router(psychologist_handler.router)
+    dp.include_router(legal_handler.router)
+    dp.include_router(telemedicine_handler.router)
+    dp.include_router(premium_handler.router)
+    dp.include_router(hotlines_handler.router)
+    dp.include_router(admin_handler.router)
+
+def create_app() -> web.Application:
+    """
+    This function creates an aiohttp web application and
+    registers handlers and middleware.
+    """
+    setup_handlers()
+    
+    dp.startup.register(on_startup)
+    dp.shutdown.register(on_shutdown)
+    
+    app = web.Application()
+    
+    async def health_check(request):
+        return web.json_response({
+            "status": "healthy",
+            "timestamp": datetime.now().isoformat(),
+            "service": "VetSupport AI Bot"
+        })
+    
+    async def status(request):
+        return web.json_response({
+            "status": "running",
+            "webhook": bool(config.get('WEBHOOK_URL')),
+            "timestamp": datetime.now().isoformat()
+        })
+    
+    async def db_status(request):
+        status = "not_configured"
+        if config.get('DATABASE_URL'):
+            try:
+                db_manager = DatabaseManager()
+                await db_manager.init_database()
+                status = "connected"
+            except Exception as e:
+                status = f"error: {str(e)}"
+        return web.json_response({
+            "database_status": status,
+            "timestamp": datetime.now().isoformat()
+        })
+    
+    app.router.add_get("/health", health_check)
+    app.router.add_get("/status", status)
+    app.router.add_get("/db-status", db_status)
+    
+    webhook_requests_handler = SimpleRequestHandler(
+        dispatcher=dp,
+        bot=bot,
+        secret_token=config['WEBHOOK_SECRET']
+    )
+    
+    webhook_requests_handler.register(app, path=config['WEBHOOK_PATH'])
+    setup_application(app, dp, bot=bot)
+    
+    return app
+
+if __name__ == "__main__":
+    app = create_app()
+    web.run_app(app, host=config.get('HOST', '0.0.0.0'), port=int(config.get('PORT', 10000)))

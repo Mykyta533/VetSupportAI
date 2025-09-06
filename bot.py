@@ -44,16 +44,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Перевірка обов’язкових змінних середовища
-required_env_vars = ['BOT_TOKEN', 'DATABASE_URL']
+required_env_vars = ['BOT_TOKEN']
 for var in required_env_vars:
     if not config.get(var):
         logger.error(f"Відсутня обов’язкова змінна середовища: {var}")
         raise ValueError(f"Змінна середовища {var} не встановлена")
 
-# Логування BOT_TOKEN для дебагу (перші 10 символів)
+# Логування BOT_TOKEN і порту для дебагу
 logger.info(f"Завантажено BOT_TOKEN: {config['BOT_TOKEN'][:10]}...")
-
-# Логування порту для дебагу
 port = config.get('PORT', '10000')
 logger.info(f"Використовується порт: {port}")
 
@@ -72,11 +70,15 @@ dp = Dispatcher(storage=MemoryStorage())
 async def on_startup(bot: Bot):
     """Ініціалізація бота при старті"""
     try:
-        # Ініціалізація бази даних
-        if config['DATABASE_URL']:
-            db_manager = DatabaseManager()
-            await db_manager.init_database()
-            logger.info("База даних успішно ініціалізована")
+        # Ініціалізація бази даних, якщо DATABASE_URL встановлено
+        if config.get('DATABASE_URL'):
+            try:
+                db_manager = DatabaseManager()
+                await db_manager.init_database()
+                logger.info("База даних успішно ініціалізована")
+            except Exception as e:
+                logger.error(f"Помилка ініціалізації бази даних: {e}")
+                raise
         else:
             logger.warning("DATABASE_URL не встановлено, пропускаємо ініціалізацію бази даних")
 

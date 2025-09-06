@@ -1,6 +1,33 @@
 import asyncio
 import logging
 import os
+
+config = {
+    "BOT_TOKEN": os.getenv("BOT_TOKEN"),
+    "WEBHOOK_URL": os.getenv("WEBHOOK_URL", ""),
+    "WEBHOOK_PATH": os.getenv("WEBHOOK_PATH", "/webhook"),
+    "WEBHOOK_SECRET": os.getenv("WEBHOOK_SECRET", ""),
+    "DATABASE_URL": os.getenv("DATABASE_URL", ""),
+    "GEMINI_API_KEY": os.getenv("GEMINI_API_KEY", ""),
+    "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY", ""),
+    "GROK_API_KEY": os.getenv("GROK_API_KEY", ""),
+    "ELEVENLABS_API_KEY": os.getenv("ELEVENLABS_API_KEY", ""),
+    "GOOGLE_TTS_KEY": os.getenv("GOOGLE_TTS_KEY", ""),
+    "WHISPER_API_KEY": os.getenv("WHISPER_API_KEY", ""),
+    "HELSI_API_KEY": os.getenv("HELSI_API_KEY", ""),
+    "DOCTOR_ONLINE_API_KEY": os.getenv("DOCTOR_ONLINE_API_KEY", ""),
+    "FACEBOOK_TOKEN": os.getenv("FACEBOOK_TOKEN", ""),
+    "INSTAGRAM_TOKEN": os.getenv("INSTAGRAM_TOKEN", ""),
+    "LINKEDIN_TOKEN": os.getenv("LINKEDIN_TOKEN", ""),
+    "ADMIN_CHAT_ID": os.getenv("ADMIN_CHAT_ID", ""),
+    "SUPPORT_CHAT_ID": os.getenv("SUPPORT_CHAT_ID", ""),
+    "SECRET_KEY": os.getenv("SECRET_KEY", ""),
+}
+
+# Перевірка обов’язкових змінних середовища
+for key in ["BOT_TOKEN", "DATABASE_URL"]:
+    if not config[key]:
+        raise ValueError(f"Критична змінна середовища {key} не встановлена")
 from datetime import datetime
 
 from aiogram import Bot, Dispatcher

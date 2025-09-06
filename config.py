@@ -1,6 +1,13 @@
 import asyncio
-import logging
 import os
+import logging
+
+# Налаштування логування
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 config = {
     "BOT_TOKEN": os.getenv("BOT_TOKEN"),
@@ -26,8 +33,11 @@ config = {
 
 # Логування значень змінних для дебагу
 for key, value in config.items():
-    if key == "BOT_TOKEN":
-        logger.info(f"{key}: {value[:10]}...")  # Логуємо перші 10 символів для безпеки
+    if value and isinstance(value, str):  # Перевіряємо, що значення є рядком і не порожнє
+        if key == "BOT_TOKEN":
+            logger.info(f"{key}: {value[:10]}...")  # Логуємо перші 10 символів для безпеки
+        else:
+            logger.info(f"{key}: {value}")
     else:
         logger.info(f"{key}: {value}")
 

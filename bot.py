@@ -52,7 +52,7 @@ for var in required_env_vars:
 
 # Логування BOT_TOKEN і порту для дебагу
 logger.info(f"Завантажено BOT_TOKEN: {config['BOT_TOKEN'][:10]}...")
-port = config.get('PORT', '10000')
+port = os.getenv('PORT', config.get('PORT', '10000'))
 logger.info(f"Використовується порт: {port}")
 
 # Ініціалізація бота та диспетчера
@@ -200,4 +200,4 @@ def create_app() -> web.Application:
 
 if __name__ == "__main__":
     app = create_app()
-    web.run_app(app, host=config.get('HOST', '0.0.0.0'), port=int(config.get('PORT', 10000)))
+    web.run_app(app, host=config.get('HOST', '0.0.0.0'), port=int(os.getenv('PORT', config.get('PORT', 10000))))

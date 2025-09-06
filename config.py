@@ -48,7 +48,7 @@
    - Note down the connection details
 
 4. **Deploy Web Service**
-   - Click "New +" → "Web Service"
+   - Click "New +" to "Web Service"
    - Connect your GitHub repository
    - Render will auto-detect Python and use `render.yaml`
    - Or manually configure:

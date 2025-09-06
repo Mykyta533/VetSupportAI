@@ -49,41 +49,35 @@ bot = Bot(
 )
 dp = Dispatcher(storage=MemoryStorage())
 
-async def on_startup():
+async def on_startup(bot: Bot):
     """Initialize bot on startup"""
     try:
-        # Initialize database
         db_manager = DatabaseManager()
         await db_manager.init_database()
         
-        # Initialize legal updater
         legal_updater = LegalUpdater()
         await legal_updater.update_legal_content()
         
-        # Initialize marketing manager
         marketing_manager = MarketingManager()
         
-        # Start scheduler for automated tasks
         start_scheduler()
         
-        # Set webhook if URL is provided
         webhook_base_url = config.get_webhook_url()
         if webhook_base_url:
-            webhook_url = f"{webhook_base_url}{config.WEBHOOK_PATH}"
             webhook_url = f"{webhook_base_url}{config.WEBHOOK_PATH}"
             await bot.set_webhook(
                 url=webhook_url,
                 secret_token=config.WEBHOOK_SECRET
             )
             logger.info(f"Webhook set to {webhook_url}")
-        
+            
         logger.info("Bot started successfully!")
         
     except Exception as e:
         logger.error(f"Error during startup: {e}")
         raise
 
-async def on_shutdown():
+async def on_shutdown(bot: Bot):
     """Cleanup on shutdown"""
     try:
         if config.get_webhook_url():
@@ -97,7 +91,6 @@ async def on_shutdown():
 
 def setup_handlers():
     """Register all handlers"""
-    # Register middlewares
     dp.message.middleware(DatabaseMiddleware())
     dp.callback_query.middleware(DatabaseMiddleware())
     dp.message.middleware(ThrottlingMiddleware())
@@ -107,7 +100,6 @@ def setup_handlers():
     dp.message.middleware(LanguageMiddleware())
     dp.callback_query.middleware(LanguageMiddleware())
     
-    # Register handlers
     dp.include_router(start_handler.router)
     dp.include_router(mood_handler.router)
     dp.include_router(recommendations_handler.router)
@@ -121,60 +113,36 @@ def setup_handlers():
     dp.include_router(hotlines_handler.router)
     dp.include_router(admin_handler.router)
 
-async def main():
-    """Main application entry point"""
+def create_app() -> web.Application:
+    """
+    This function creates an aiohttp web application and
+    registers handlers and middleware.
+    """
     setup_handlers()
     
-    webhook_url = config.get_webhook_url()
-    if webhook_url:
-        # Webhook mode
-        dp.startup.register(on_startup)
-        dp.shutdown.register(on_shutdown)
-        
-        app = web.Application()
-        
-        # Add health check endpoint for Render
-        async def health_check(request):
-            return web.json_response({
-                "status": "healthy",
-                "timestamp": datetime.now().isoformat(),
-                "service": "VetSupport AI Bot"
-            })
-        
-        app.router.add_get("/health", health_check)
-        
-        
-        # Add health check endpoint for Render
-        async def health_check(request):
-            return web.json_response({
-                "status": "healthy",
-                "timestamp": datetime.now().isoformat(),
-                "service": "VetSupport AI Bot"
-            })
-        
-        app.router.add_get("/health", health_check)
-        
-        webhook_requests_handler = SimpleRequestHandler(
-            dispatcher=dp,
-            bot=bot,
-            secret_token=config.WEBHOOK_SECRET
-        )
-        webhook_requests_handler.register(app, path=config.WEBHOOK_PATH)
-        setup_application(app, dp, bot=bot)
-        
-        web.run_app(app, host=config.HOST, port=config.PORT)
-    else:
-        # Polling mode
-        await on_startup()
-        try:
-            await dp.start_polling(bot)
-        finally:
-            await on_shutdown()
+    dp.startup.register(on_startup)
+    dp.shutdown.register(on_shutdown)
+    
+    app = web.Application()
+    
+    async def health_check(request):
+        return web.json_response({
+            "status": "healthy",
+            "timestamp": datetime.now().isoformat(),
+            "service": "VetSupport AI Bot"
+        })
+    
+    app.router.add_get("/health", health_check)
+    
+    webhook_requests_handler = SimpleRequestHandler(
+        dispatcher=dp,
+        bot=bot,
+        secret_token=config.WEBHOOK_SECRET
+    )
+    
+    webhook_requests_handler.register(app, path=config.WEBHOOK_PATH)
+    setup_application(app, dp, bot=bot)
+    
+    return app
 
-if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        logger.info("Bot stopped by user")
-    except Exception as e:
-        logger.error(f"Fatal error: {e}")
+app = create_app()

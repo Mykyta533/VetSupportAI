@@ -3,9 +3,9 @@
 ## 📋 Prerequisites
 
 #1. **Python 3.10+** installed
-2. **PostgreSQL** database or **Firebase** account
-3. **API Keys** for required services
-4. **Hosting platform** account (Render/Replit)
+#2. **PostgreSQL** database or **Firebase** account
+#3. **API Keys** for required services
+#4. **Hosting platform** account (Render/Replit)
 
 ## 🔑 Required API Keys
 

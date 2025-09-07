@@ -11,7 +11,7 @@ Pillow
 gtts==2.4.0
 pydub==0.25.1
 firebase-admin==6.4.0
-psycopg2-binary==2.9.9
+psycopg2-binary==2.9.8
 fastapi==0.108.0
 uvicorn==0.25.0
 schedule==1.2.0

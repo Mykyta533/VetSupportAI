@@ -23,4 +23,3 @@ pandas==2.2.0
 numpy==1.26.3
 cryptography
 gunicorn==21.2.0
-gunicorn==21.2.0

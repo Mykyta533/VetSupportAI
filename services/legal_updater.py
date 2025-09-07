@@ -11,8 +11,8 @@ logger = logging.getLogger(__name__)
 
 class LegalUpdater:
     def __init__(self):
-        self.government_api_url = config.LEGAL_API_URL
-        self.api_key = config.GOVERNMENT_API_KEY
+        self.government_api_url = config.get('LEGAL_API_URL')
+        self.api_key = config.get('GOVERNMENT_API_KEY')
         
     async def update_legal_content(self):
         """Update legal content from government sources"""

@@ -17,15 +17,15 @@ class AIService:
     def setup_models(self):
         """Initialize AI models"""
         # Gemini setup
-        if config.GEMINI_API_KEY:
-            genai.configure(api_key=config.GEMINI_API_KEY)
+        if config.get('GEMINI_API_KEY'):
+            genai.configure(api_key=config['GEMINI_API_KEY'])
             self.gemini_model = genai.GenerativeModel('gemini-1.5-flash')
         else:
             self.gemini_model = None
             
         # OpenAI setup
-        if config.OPENAI_API_KEY:
-            self.openai_client = openai.AsyncOpenAI(api_key=config.OPENAI_API_KEY)
+        if config.get('OPENAI_API_KEY'):
+            self.openai_client = openai.AsyncOpenAI(api_key=config['OPENAI_API_KEY'])
         else:
             self.openai_client = None
     

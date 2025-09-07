@@ -29,6 +29,7 @@ async def premium_menu(callback: CallbackQuery, language: str = "uk"):
 async def show_premium_offer(callback: CallbackQuery, language: str):
     """Show premium subscription offer"""
     premium_text = get_text("premium_benefits", language).format(price=config.PREMIUM_PRICE)
+    premium_text = get_text("premium_benefits", language).format(price=config.get('PREMIUM_PRICE', 99))
     
     # Add detailed benefits
     benefits_list = [
@@ -233,6 +234,7 @@ async def subscribe_premium(callback: CallbackQuery, language: str = "uk"):
     # In a real implementation, this would integrate with payment systems
     subscription_text = f"💳 **{get_text('subscription_payment', language, default='Оплата підписки')}**\n\n"
     subscription_text += f"💰 {get_text('monthly_price', language, default='Вартість')}: {config.PREMIUM_PRICE} грн/місяць\n\n"
+    subscription_text += f"💰 {get_text('monthly_price', language, default='Вартість')}: {config.get('PREMIUM_PRICE', 99)} грн/місяць\n\n"
     subscription_text += get_text("payment_methods", language,
                                 default="Доступні способи оплати:\n• Банківська картка\n• Google Pay\n• Apple Pay\n• Приват24")
     
@@ -294,6 +296,7 @@ async def premium_details(callback: CallbackQuery, language: str = "uk"):
     
     details_text += f"\n💰 **{get_text('pricing_info', language, default='Інформація про ціни')}:**\n"
     details_text += f"• {get_text('monthly_subscription', language, default='Місячна підписка')}: {config.PREMIUM_PRICE} грн\n"
+    details_text += f"• {get_text('monthly_subscription', language, default='Місячна підписка')}: {config.get('PREMIUM_PRICE', 99)} грн\n"
     details_text += f"• {get_text('first_week_free', language, default='Перший тиждень безкоштовно')}\n"
     details_text += f"• {get_text('cancel_anytime', language, default='Скасування в будь-який час')}\n"
     details_text += f"• {get_text('no_hidden_fees', language, default='Без прихованих платежів')}"

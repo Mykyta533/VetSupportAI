@@ -18,7 +18,7 @@ class DatabaseManager:
         """Initialize database connection pool and create tables"""
         try:
             self.pool = await asyncpg.create_pool(
-                config.DATABASE_URL,
+                config['DATABASE_URL'],
                 min_size=1,
                 max_size=10,
                 server_settings={

@@ -37,7 +37,7 @@ class VoiceService:
     async def _whisper_transcribe(self, audio_file_path: str, language: str) -> Dict[str, Any]:
         """Transcribe using OpenAI Whisper"""
         headers = {
-            "Authorization": f"Bearer {config.OPENAI_API_KEY}"
+            "Authorization": f"Bearer {config['OPENAI_API_KEY']}"
         }
         
         # Map language codes for Whisper
@@ -143,7 +143,7 @@ class VoiceService:
             headers = {
                 "Accept": "audio/mpeg",
                 "Content-Type": "application/json",
-                "xi-api-key": config.ELEVENLABS_API_KEY
+                "xi-api-key": config['ELEVENLABS_API_KEY']
             }
             
             data = {

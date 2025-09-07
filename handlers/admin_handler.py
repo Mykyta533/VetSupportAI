@@ -12,7 +12,7 @@ router = Router()
 @router.message(Command("admin"))
 async def admin_panel(message: Message):
     """Admin panel access"""
-    if str(message.from_user.id) != config.ADMIN_CHAT_ID:
+    if str(message.from_user.id) != config.get('ADMIN_CHAT_ID'):
         await message.answer("❌ Access denied")
         return
     
@@ -29,7 +29,7 @@ async def admin_panel(message: Message):
 @router.message(Command("stats"))
 async def bot_statistics(message: Message):
     """Show bot statistics"""
-    if str(message.from_user.id) != config.ADMIN_CHAT_ID:
+    if str(message.from_user.id) != config.get('ADMIN_CHAT_ID'):
         return
     
     try:
@@ -95,7 +95,7 @@ async def bot_statistics(message: Message):
 @router.message(Command("users"))
 async def user_management(message: Message):
     """User management commands"""
-    if str(message.from_user.id) != config.ADMIN_CHAT_ID:
+    if str(message.from_user.id) != config.get('ADMIN_CHAT_ID'):
         return
     
     try:
@@ -125,7 +125,7 @@ async def user_management(message: Message):
 @router.message(Command("broadcast"))
 async def broadcast_message(message: Message):
     """Send broadcast message to all users"""
-    if str(message.from_user.id) != config.ADMIN_CHAT_ID:
+    if str(message.from_user.id) != config.get('ADMIN_CHAT_ID'):
         return
     
     # Extract message text after command
@@ -172,7 +172,7 @@ async def broadcast_message(message: Message):
 @router.message(Command("maintenance"))
 async def toggle_maintenance(message: Message):
     """Toggle maintenance mode"""
-    if str(message.from_user.id) != config.ADMIN_CHAT_ID:
+    if str(message.from_user.id) != config.get('ADMIN_CHAT_ID'):
         return
     
     # This would integrate with the maintenance middleware
@@ -181,7 +181,7 @@ async def toggle_maintenance(message: Message):
 @router.message(Command("logs"))
 async def view_logs(message: Message):
     """View recent bot logs"""
-    if str(message.from_user.id) != config.ADMIN_CHAT_ID:
+    if str(message.from_user.id) != config.get('ADMIN_CHAT_ID'):
         return
     
     try:
@@ -200,7 +200,7 @@ async def view_logs(message: Message):
 # Crisis detection and admin notifications
 async def notify_admin_crisis(user_id: int, message_text: str, crisis_indicators: dict):
     """Notify admin about crisis detection"""
-    if not config.ADMIN_CHAT_ID:
+    if not config.get('ADMIN_CHAT_ID'):
         return
     
     try:

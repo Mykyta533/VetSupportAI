@@ -17,6 +17,10 @@ class DatabaseManager:
     async def init_database(self):
         """Initialize database connection pool and create tables"""
         try:
+            if not config.get('DATABASE_URL'):
+                logger.warning("DATABASE_URL not set, skipping database initialization")
+                return
+                
             self.pool = await asyncpg.create_pool(
                 config['DATABASE_URL'],
                 min_size=1,
@@ -222,6 +226,10 @@ class DatabaseManager:
     async def create_user(self, user: User) -> bool:
         """Create a new user"""
         try:
+            if not self.pool:
+                logger.warning("Database pool not initialized")
+                return False
+                
             async with self.pool.acquire() as conn:
                 await conn.execute('''
                     INSERT INTO users (
@@ -253,6 +261,10 @@ class DatabaseManager:
     async def get_user(self, user_id: int) -> Optional[User]:
         """Get user by ID"""
         try:
+            if not self.pool:
+                logger.warning("Database pool not initialized")
+                return None
+                
             async with self.pool.acquire() as conn:
                 row = await conn.fetchrow(
                     'SELECT * FROM users WHERE user_id = $1', user_id
@@ -290,6 +302,10 @@ class DatabaseManager:
     async def create_mood_checkin(self, checkin: MoodCheckIn) -> bool:
         """Create a new mood check-in"""
         try:
+            if not self.pool:
+                logger.warning("Database pool not initialized")
+                return False
+                
             async with self.pool.acquire() as conn:
                 await conn.execute('''
                     INSERT INTO mood_checkins (user_id, mood_level, note, ai_analysis, recommended_actions)
@@ -308,6 +324,10 @@ class DatabaseManager:
     async def get_user_mood_history(self, user_id: int, days: int = 30) -> List[Dict]:
         """Get user's mood history for the specified number of days"""
         try:
+            if not self.pool:
+                logger.warning("Database pool not initialized")
+                return []
+                
             async with self.pool.acquire() as conn:
                 rows = await conn.fetch('''
                     SELECT mood_level, note, timestamp
@@ -324,6 +344,10 @@ class DatabaseManager:
     async def update_mood_stats(self, user_id: int, new_mood: int):
         """Update user's mood statistics"""
         try:
+            if not self.pool:
+                logger.warning("Database pool not initialized")
+                return
+                
             async with self.pool.acquire() as conn:
                 # Get current stats
                 stats = await conn.fetchrow(
@@ -365,6 +389,10 @@ class DatabaseManager:
     async def save_ai_chat(self, chat: AIChat) -> bool:
         """Save AI chat interaction"""
         try:
+            if not self.pool:
+                logger.warning("Database pool not initialized")
+                return False
+                
             async with self.pool.acquire() as conn:
                 await conn.execute('''
                     INSERT INTO ai_chats (user_id, message, response, model_used, is_voice, sentiment_score, crisis_flag)
@@ -388,6 +416,10 @@ class DatabaseManager:
                                  mood_level: int = None) -> List[Dict]:
         """Get recommendations based on criteria"""
         try:
+            if not self.pool:
+                logger.warning("Database pool not initialized")
+                return []
+                
             async with self.pool.acquire() as conn:
                 query = 'SELECT * FROM recommendations WHERE language = $1'
                 params = [language]
@@ -412,6 +444,10 @@ class DatabaseManager:
     async def get_legal_documents(self, category: str = None, language: str = "uk") -> List[Dict]:
         """Get legal documents"""
         try:
+            if not self.pool:
+                logger.warning("Database pool not initialized")
+                return []
+                
             async with self.pool.acquire() as conn:
                 if category:
                     rows = await conn.fetch('''

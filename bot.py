@@ -75,10 +75,14 @@ async def on_startup(bot: Bot):
             try:
                 db_manager = DatabaseManager()
                 await db_manager.init_database()
+                # Make db_manager globally available
+                import database.db_manager
+                database.db_manager.db_manager = db_manager
                 logger.info("База даних успішно ініціалізована")
             except Exception as e:
                 logger.error(f"Помилка ініціалізації бази даних: {e}")
-                raise
+                # Don't raise, continue without database
+                logger.warning("Continuing without database functionality")
         else:
             logger.warning("DATABASE_URL не встановлено, пропускаємо ініціалізацію бази даних")
 

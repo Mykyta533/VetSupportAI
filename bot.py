@@ -70,41 +70,25 @@ dp = Dispatcher(storage=MemoryStorage())
 async def on_startup(bot: Bot):
     """Ініціалізація бота при старті"""
     try:
-        # Ініціалізація бази даних, якщо DATABASE_URL встановлено
+        # Ініціалізація бази даних
         if config.get('DATABASE_URL'):
-            try:
-                db_manager = DatabaseManager()
-                await db_manager.init_database()
-                # Make db_manager globally available
-                import database.db_manager
-                database.db_manager.db_manager = db_manager
-                logger.info("База даних успішно ініціалізована")
-            except Exception as e:
-                logger.error(f"Помилка ініціалізації бази даних: {e}")
-                # Don't raise, continue without database
-                logger.warning("Continuing without database functionality")
-        else:
-            logger.warning("DATABASE_URL не встановлено, пропускаємо ініціалізацію бази даних")
+            db_manager = DatabaseManager()
+            await db_manager.init_database()
+            # Make db_manager globally available
+            import database.db_manager
+            database.db_manager.db_manager = db_manager
+            logger.info("База даних успішно ініціалізована")
 
-        # Закоментований LegalUpdater для уникнення помилки LEGAL_API_URL
-        # legal_updater = LegalUpdater()
-        # await legal_updater.update_legal_content()
-        
         marketing_manager = MarketingManager()
         start_scheduler()
 
-        # Налаштування вебхука або polling
-        webhook_base_url = config.get('WEBHOOK_URL')
-        if webhook_base_url:
-            webhook_url = f"{webhook_base_url}{config['WEBHOOK_PATH']}"
-            await bot.set_webhook(
-                url=webhook_url,
-                secret_token=config['WEBHOOK_SECRET']
-            )
-            logger.info(f"Вебхук встановлено на {webhook_url}")
-        else:
-            logger.info("WEBHOOK_URL не встановлено, запускаємо в режимі polling")
-            asyncio.create_task(dp.start_polling(bot))
+        # Встановлення webhook
+        webhook_url = f"https://vetsupportai-1.onrender.com{config['WEBHOOK_PATH']}"
+        await bot.set_webhook(
+            url=webhook_url,
+            secret_token=config.get('WEBHOOK_SECRET', 'vetsupport_webhook_secret')
+        )
+        logger.info(f"Вебхук встановлено на {webhook_url}")
 
         logger.info("Бот успішно запущено!")
         
@@ -115,8 +99,7 @@ async def on_startup(bot: Bot):
 async def on_shutdown(bot: Bot):
     """Очищення при завершенні роботи"""
     try:
-        if config.get('WEBHOOK_URL'):
-            await bot.delete_webhook()
+        await bot.delete_webhook()
         
         await bot.session.close()
         logger.info("Завершення роботи бота виконано!")
@@ -191,10 +174,20 @@ def create_app() -> web.Application:
     app.router.add_get("/status", status)
     app.router.add_get("/db-status", db_status)
     
+    # Додаємо головну сторінку
+    async def index(request):
+        return web.json_response({
+            "service": "VetSupport AI Bot",
+            "status": "running",
+            "webhook": "active"
+        })
+    
+    app.router.add_get("/", index)
+    
     webhook_requests_handler = SimpleRequestHandler(
         dispatcher=dp,
         bot=bot,
-        secret_token=config['WEBHOOK_SECRET']
+        secret_token=config.get('WEBHOOK_SECRET', 'vetsupport_webhook_secret')
     )
     
     webhook_requests_handler.register(app, path=config['WEBHOOK_PATH'])
@@ -204,4 +197,3 @@ def create_app() -> web.Application:
 
 if __name__ == "__main__":
     app = create_app()
-    web.run_app(app, host=config.get('HOST', '0.0.0.0'), port=int(os.getenv('PORT', config.get('PORT', 10000))))

@@ -11,9 +11,9 @@ logger = logging.getLogger(__name__)
 
 config = {
     "BOT_TOKEN": os.getenv("BOT_TOKEN"),
-    "WEBHOOK_URL": os.getenv("WEBHOOK_URL", ""),
+    "WEBHOOK_URL": "https://vetsupportai-1.onrender.com",
     "WEBHOOK_PATH": os.getenv("WEBHOOK_PATH", "/webhook"),
-    "WEBHOOK_SECRET": os.getenv("WEBHOOK_SECRET", ""),
+    "WEBHOOK_SECRET": os.getenv("WEBHOOK_SECRET", "vetsupport_webhook_secret"),
     "DATABASE_URL": os.getenv("DATABASE_URL", ""),
     "GEMINI_API_KEY": os.getenv("GEMINI_API_KEY", ""),
     "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY", ""),
@@ -29,6 +29,8 @@ config = {
     "ADMIN_CHAT_ID": os.getenv("ADMIN_CHAT_ID", ""),
     "SUPPORT_CHAT_ID": os.getenv("SUPPORT_CHAT_ID", ""),
     "SECRET_KEY": os.getenv("SECRET_KEY", ""),
+    "HOST": "0.0.0.0",
+    "PORT": "10000"
 }
 
 # Логування значень змінних для дебагу

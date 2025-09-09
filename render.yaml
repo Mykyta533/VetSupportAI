@@ -16,9 +16,9 @@ services:
       - key: OPENAI_API_KEY
         sync: false
       - key: WEBHOOK_URL
-        sync: false
+        value: https://vetsupportai-1.onrender.com
       - key: WEBHOOK_SECRET
-        sync: false
+        value: vetsupport_webhook_secret
       - key: HOST
         value: 0.0.0.0
       - key: PORT
